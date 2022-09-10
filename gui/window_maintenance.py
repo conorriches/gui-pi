@@ -1,7 +1,7 @@
 import time
 from guizero import Window, Text, PushButton, ListBox, Box
 
-class Window_Maintenance():
+class window_maintenance():
 
   def __init__(self, app, cb):
     global window, error_list, callback, details_window, details_date_txt, details_text_txt

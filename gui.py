@@ -6,10 +6,10 @@ import time
 from guizero import App, Text, PushButton, Box, Window
 
 # Import GUI windows
-from gui import window_maintenance
+from gui.window_maintenance import window_maintenance
 
 # Import business logic
-from app import doorbot
+#from app import doorbot
 
 # App settings
 app_name = "Doorbot"
@@ -120,7 +120,7 @@ admin_btn = PushButton(left_box, command=say_hello, text="Admin", width="fill")
 maint_btn = PushButton(right_box, command=log_maintenance, text="Maintenance")
 
 # Set up windows
-maintenance_window = Window_Maintenance(app, clear_maintenance)
+maintenance_window = window_maintenance(app, clear_maintenance)
 
 def show_window(key):
   maintenance_window.close_window()
