@@ -7,6 +7,7 @@ from guizero import App, Text, PushButton, Box, Window
 
 # Import GUI windows
 from gui.window_maintenance import window_maintenance
+from gui.window_keypad import window_keypad
 
 # Import business logic
 #from app import doorbot
@@ -83,18 +84,36 @@ def admin_check():
     log_btn.disable()
     activity_btn.disable()
 
+# Set up app
 app = App(title=app_name, bg="white")
 app.set_full_screen()
 app.text_size = 26
 
-# Header
+# Set up windows
+maintenance_window = window_maintenance(app, clear_maintenance)
+keypad_window = window_keypad(app)
+
+def show_window(key):
+  maintenance_window.close_window()
+
+  if(key=="maintenance"):
+    maintenance_window.set_errors(maintenance)
+    maintenance_window.show_window()
+  elif(key=="keypad"):
+    keypad_window.show_window()
+
+# Title Box
 title_box = Box(app, width="fill", align="bottom")
 title_box.bg = "orange"
 title_box.text_size = 40
-title = Text(title_box, text= app_name + " ", align="left")
-admin_txt = Text(title_box, align="right", visible=False, text="★")
-warn_txt = Text(title_box, align="right", visible=False, text="⚠")
-status = Text(title_box, text="INIT", align="right")
+
+title_box_right = Box(title_box, align="right")
+title_box_left = Box(title_box, align="left")
+
+title = Text(title_box_left, text= app_name + " ", align="left")
+admin_txt = Text(title_box_right, align="right", visible=False, text="★")
+warn_txt = Text(title_box_right, align="right", visible=False, text="⚠")
+status = Text(title_box_right, text="INIT", align="right")
 status.repeat(1000, status_icons)
 
 # Footer
@@ -112,22 +131,13 @@ main.repeat(500, admin_check)
 left_box = Box(main, width="fill", height="fill", align="left")
 right_box = Box(main, width="fill", height="fill", align="right")
 
-keypad_btn = PushButton(left_box, text="Read Keypad", command=say_hello, width="fill")
+keypad_btn = PushButton(left_box, text="Read Keypad", command=show_window, args=["keypad"], width="fill")
 fob_btn = PushButton(right_box, text="Read Fob", command=say_hello, width="fill")
 activity_btn = PushButton(left_box, text="Activity", enabled=False, command=say_hello, width="fill")
-log_btn = PushButton(right_box, text="Logs", command=(lambda: show_window("maintenance")), enabled=False, width="fill")
+log_btn = PushButton(right_box, text="Logs", command=show_window, args=["maintenance"], enabled=False, width="fill")
 admin_btn = PushButton(left_box, command=say_hello, text="Admin", width="fill")
 maint_btn = PushButton(right_box, command=log_maintenance, text="Maintenance")
 
-# Set up windows
-maintenance_window = window_maintenance(app, clear_maintenance)
-
-def show_window(key):
-  maintenance_window.close_window()
-
-  if(key=="maintenance"):
-    maintenance_window.set_errors(maintenance)
-    maintenance_window.show_window()
 
 # Run!
 app.display()
