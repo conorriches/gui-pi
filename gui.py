@@ -1,13 +1,24 @@
+# MAIN SCRIPT FOR THE PROJECT
+# This GUI script imports the business logic keeping things separate
+
+# Python Modules
 import time
 from guizero import App, Text, PushButton, Box, Window
-from window_maintenance import Window_Maintenance
 
-# Flags
+# Import GUI windows
+from gui import window_maintenance
+
+# Import business logic
+from app import doorbot
+
+# App settings
+app_name = "Doorbot"
+
+# System variables
 isAdmin = False
 maintenance = []
 last_updated = "1h ago"
 info_flag = 0
-app_name = "Doorbot"
 
 def log_maintenance():
   global maintenance
